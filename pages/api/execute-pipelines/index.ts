@@ -22,7 +22,7 @@ export default async (
         res.status(401).json({ message: "User unauthorizated" })
     }
 
-    const { data } = await axios.post("https://api.github.com/user", {}, {
+    const { data } = await axios.get("https://api.github.com/user", {
         headers: {
             'Accept': 'application/vnd.github+json',
             'X-GitHub-Api-Version': '2022-11-28',
