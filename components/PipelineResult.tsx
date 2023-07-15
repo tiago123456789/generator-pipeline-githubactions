@@ -29,7 +29,6 @@ function PipelineResult() {
             }
         })
 
-        console.log(response.data)
         setGistLink(response.data.link)
     }
 
