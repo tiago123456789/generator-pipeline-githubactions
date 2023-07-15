@@ -1,31 +1,5 @@
-// import { getSession  } from "next-auth/react"
-// import { randomUUID } from "crypto"
-// import axios from "axios"
-
-// export default async (req, res) => {
-//     console.log(req)
-//     const session: { [key: string]: any } = await getSession({ req })
-//     console.log(session)
-
-//     // const response = await axios.post("https://api.github.com/gists", {
-//     //     "public": false,
-//     //     "files": {
-//     //         [`${randomUUID()}.yaml`]: {
-//     //             "content": req.body.content
-//     //         }
-//     //     }
-//     // }, {
-//     //     headers: {
-//     //         "Accept": "application/vnd.github+json",
-//     //         "Authorization": `Bearer ${session.user.accessToken}`,
-//     //         "X-GitHub-Api-Version": "2022-11-28"
-//     //     }
-//     // }).catch(console.log)
-
-//     res.end()
-// }
-
-// This is an example of how to read a JSON Web Token from an API route
+import { randomUUID } from "crypto"
+import axios from "axios"
 import { getSession } from "next-auth/react"
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -34,7 +8,30 @@ export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const session = await getSession({req})
+  const session = await getSession({ req })
+  if (!session) {
+    res.status(401).json({ message: "User unauthorizated" })
+  }
+
+  const response = await axios.post("https://api.github.com/gists", {
+    "public": false,
+    "files": {
+      [`${randomUUID()}.yaml`]: {
+        "content": req.body.content
+      }
+    }
+  }, {
+    headers: {
+      "Accept": "application/vnd.github+json",
+      // @ts-ignore
+      "Authorization": `Bearer ${session.user.accessToken}`,
+      "X-GitHub-Api-Version": "2022-11-28"
+    }
+  }).catch(console.log)
+
   console.log(session)
-  res.end()
+  // @ts-ignore
+  console.log(response.data)
+  // @ts-ignore
+  res.json(response.data)
 }
