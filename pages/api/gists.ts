@@ -32,6 +32,5 @@ export default async (
   console.log(session)
   // @ts-ignore
   console.log(response.data)
-  // @ts-ignore
-  res.json(response.data)
+  res.end()
 }
