@@ -17,7 +17,7 @@ function PipelineResult() {
     const { data: session } = useSession()
     const { yamlPipeline, setYamlPipeline } = usePipeline()
     const [copied, setCopied] = useState(false)
-    const [gistLink, setGistLink] = useState("https://youtube.com.br")
+    const [gistLink, setGistLink] = useState(null)
 
     async function saveAsGist() {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/gists`, {
@@ -30,7 +30,7 @@ function PipelineResult() {
         })
 
         console.log(response.data)
-        setGistLink(response.data.url)
+        setGistLink(response.data.link)
     }
 
     useEffect(() => {
