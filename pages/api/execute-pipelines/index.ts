@@ -96,6 +96,7 @@ export default async (
         console.log(fileData)
 
     } catch(error) {
+        console.log(error?.reponse)
         console.log(error?.reponse?.data)
         return res.status(500).json({ error: error?.reponse?.data })
     }
