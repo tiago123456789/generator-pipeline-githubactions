@@ -72,7 +72,15 @@ export default async (
        - image: nginx
          name: nginx`
 
-    const { data: fileData } = await axios.put(`https://api.github.com/repos/${data.login}/${REPOSITORY_NAME}REPO/contents/.github/workflows/pipeline.yml`, {
+//          curl -L \
+//   -X PUT \
+//   -H "Accept: application/vnd.github+json" \
+//   -H "Authorization: Bearer <YOUR-TOKEN>"\
+//   -H "X-GitHub-Api-Version: 2022-11-28" \
+//   https://api.github.com/repos/OWNER/REPO/contents/PATH \
+//   -d '{"message":"my commit message","committer":{"name":"Monalisa Octocat",
+    // "email":"octocat@github.com"},"content":"bXkgbmV3IGZpbGUgY29udGVudHM="}'
+    const { data: fileData } = await axios.put(`https://api.github.com/repos/${data.login}/${REPOSITORY_NAME}/contents/.github/workflows/pipeline.yml`, {
         "message": "Send pipeline generated to github repository",
         "committer": { "name": data.login, "email": data.email },
         "content": Buffer.from(pipelineTest, "utf-8").toString("base64")
