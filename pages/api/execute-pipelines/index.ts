@@ -97,7 +97,7 @@ export default async (
 
     } catch(error) {
         console.log(error?.reponse?.data)
-        res.status(500).json({ error: error?.reponse?.data })
+        return res.status(500).json({ error: error?.reponse?.data })
     }
     
 
