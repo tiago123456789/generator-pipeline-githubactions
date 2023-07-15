@@ -80,20 +80,27 @@ export default async (
 //   https://api.github.com/repos/OWNER/REPO/contents/PATH \
 //   -d '{"message":"my commit message","committer":{"name":"Monalisa Octocat",
     // "email":"octocat@github.com"},"content":"bXkgbmV3IGZpbGUgY29udGVudHM="}'
-    const { data: fileData } = await axios.put(`https://api.github.com/repos/${data.login}/${REPOSITORY_NAME}/contents/.github/workflows/pipeline.yml`, {
-        "message": "Send pipeline generated to github repository",
-        "committer": { "name": data.login, "email": data.email },
-        "content": Buffer.from(pipelineTest, "utf-8").toString("base64")
-    }, {
-        headers: {
-            'Accept': 'application/vnd.github+json',
-            'X-GitHub-Api-Version': '2022-11-28',
-            // @ts-ignore
-            'Authorization': `Bearer ${session.user.accessToken}`
-        }
-    })
+    try {
+        const { data: fileData } = await axios.put(`https://api.github.com/repos/${data.login}/${REPOSITORY_NAME}/contents/.github/workflows/pipeline.yml`, {
+            "message": "Send pipeline generated to github repository",
+            "committer": { "name": data.login, "email": data.email },
+            "content": Buffer.from(pipelineTest, "utf-8").toString("base64")
+        }, {
+            headers: {
+                'Accept': 'application/vnd.github+json',
+                'X-GitHub-Api-Version': '2022-11-28',
+                // @ts-ignore
+                'Authorization': `Bearer ${session.user.accessToken}`
+            }
+        })
+        console.log(fileData)
 
-    console.log(fileData)
+    } catch(error) {
+        console.log(error?.reponse?.data)
+        res.status(500).json({ error: error?.reponse?.data })
+    }
+    
+
 
     res.status(200).json({
         message: "hi function"
