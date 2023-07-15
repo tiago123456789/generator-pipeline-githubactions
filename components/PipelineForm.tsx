@@ -253,7 +253,7 @@ const PipelineForm = () => {
         return (
           <Card fluid key={index}>
             <Card.Header onClick={() => removeStep(index)}>
-              <Button color="danger" >
+              <Button color="red" >
                 Remove
               </Button>
             </Card.Header>
