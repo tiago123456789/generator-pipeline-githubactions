@@ -13,6 +13,8 @@ export default async (
     res.status(401).json({ message: "User unauthorizated" })
   }
 
+  console.log(session)
+
   const response = await axios.post("https://api.github.com/gists", {
     "public": false,
     "files": {
