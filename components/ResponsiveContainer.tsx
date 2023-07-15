@@ -20,6 +20,11 @@ import { useSession, signIn, signOut } from "next-auth/react"
 const MobileContainer = ({ children }) => {
   const { data: session } = useSession()
 
+  async function login(e) {
+    e.preventDefault()
+    await signIn()
+  }
+
   return (
     <div>
       <Sidebar.Pushable>
@@ -44,7 +49,7 @@ const MobileContainer = ({ children }) => {
                     </>
                   }
                   {!session &&
-                    <Button as='a' inverted onClick={() => signIn()}>
+                    <Button as='a' inverted onClick={login}>
                       <Icon name="github" />
                       Log in
                     </Button>

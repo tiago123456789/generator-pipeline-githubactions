@@ -1,14 +1,17 @@
 import { randomUUID } from "crypto"
 import axios from "axios"
-import { getSession } from "next-auth/react"
 import { NextApiRequest, NextApiResponse } from "next";
+
+import { authOptions } from './auth/[...nextauth]'
+import { getServerSession } from "next-auth/next"
 
 
 export default async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  const session = await getSession({ req })
+  // @ts-ignore
+  const session = await getServerSession(req, res, authOptions)
   console.log(session)
 
   if (!session) {
