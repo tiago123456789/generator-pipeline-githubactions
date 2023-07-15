@@ -26,7 +26,7 @@
 // }
 
 // This is an example of how to read a JSON Web Token from an API route
-import { getSession } from "next-auth/client"
+import { getSession } from "next-auth/react"
 import { NextApiRequest, NextApiResponse } from "next";
 
 
