@@ -23,6 +23,7 @@ function PipelineResult() {
             content: `${yamlPipeline}`,
         }, {
             headers: {
+                // @ts-ignore
                 Authorization: `Bearer ${session?.user?.accessToken}`
             }
         })
