@@ -35,22 +35,22 @@ export default async (
     console.log("@@@@@@@@@@@@@@@")
     const REPOSITORY_NAME = "simulate-github-actions-pipeline";
 
-    const { data: repositoryData } = await axios.post("https://api.github.com/user/repos", {
-        "name": REPOSITORY_NAME,
-        "description": "The repository created to run pipeline generated in generator pipeline github actions site",
-        "private": true,
-        "is_template": false
-    }, {
-        headers: {
-            'Accept': 'application/vnd.github+json',
-            'X-GitHub-Api-Version': '2022-11-28',
-            // @ts-ignore
-            'Authorization': `Bearer ${session.user.accessToken}`
-        }
-    })
+    // const { data: repositoryData } = await axios.post("https://api.github.com/user/repos", {
+    //     "name": REPOSITORY_NAME,
+    //     "description": "The repository created to run pipeline generated in generator pipeline github actions site",
+    //     "private": true,
+    //     "is_template": false
+    // }, {
+    //     headers: {
+    //         'Accept': 'application/vnd.github+json',
+    //         'X-GitHub-Api-Version': '2022-11-28',
+    //         // @ts-ignore
+    //         'Authorization': `Bearer ${session.user.accessToken}`
+    //     }
+    // })
 
-    console.log(repositoryData)
-    console.log("@@@@@@@@@@@@@@@")
+    // console.log(repositoryData)
+    // console.log("@@@@@@@@@@@@@@@")
 
     const pipelineTest = `apiVersion: apps/v1
     kind: Deployment
