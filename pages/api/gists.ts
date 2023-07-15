@@ -35,8 +35,8 @@ export default async (
   })
 
   // @ts-ignore
-  const { url } = response.data;
+  const { id } = response.data;
   res.json({
-    link: url
+    link: `https://gist.github.com/${id}`
   })
 }
