@@ -38,6 +38,7 @@ const MobileContainer = ({ children }) => {
                       
                       Signed in as {session.user.email} &nbsp;
                       <Button  inverted onClick={() => signOut()}>
+                        {/* @ts-ignore */}
                       <Image src={session?.user?.picture} avatar /> &nbsp; Sign out
                       </Button>
                     </>
