@@ -52,40 +52,40 @@ export default async (
     console.log(repositoryData)
     console.log("@@@@@@@@@@@@@@@")
 
-    // const pipelineTest = `apiVersion: apps/v1
-    // kind: Deployment
-    // metadata:
-    //  labels:
-    //    app: nginx
-    //    name: nginx
-    // spec:
-    //  replicas: 1
-    //  selector:
-    //   matchLabels:
-    //    app: nginx
-    //  template:
-    //   metadata:
-    //    labels:
-    //     app: nginx
-    //   spec:
-    //    containers:
-    //    - image: nginx
-    //      name: nginx`
+    const pipelineTest = `apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+     labels:
+       app: nginx
+       name: nginx
+    spec:
+     replicas: 1
+     selector:
+      matchLabels:
+       app: nginx
+     template:
+      metadata:
+       labels:
+        app: nginx
+      spec:
+       containers:
+       - image: nginx
+         name: nginx`
 
-    // const { data: fileData } = await axios.put(`https://api.github.com/repos/${data.login}/${REPOSITORY_NAME}REPO/contents/.github/workflows/pipeline.yml`, {
-    //     "message": "Send pipeline generated to github repository",
-    //     "committer": { "name": data.login, "email": data.email },
-    //     "content": Buffer.from(pipelineTest, "utf-8").toString("base64")
-    // }, {
-    //     headers: {
-    //         'Accept': 'application/vnd.github+json',
-    //         'X-GitHub-Api-Version': '2022-11-28',
-    //         // @ts-ignore
-    //         'Authorization': `Bearer ${session.user.accessToken}`
-    //     }
-    // })
+    const { data: fileData } = await axios.put(`https://api.github.com/repos/${data.login}/${REPOSITORY_NAME}REPO/contents/.github/workflows/pipeline.yml`, {
+        "message": "Send pipeline generated to github repository",
+        "committer": { "name": data.login, "email": data.email },
+        "content": Buffer.from(pipelineTest, "utf-8").toString("base64")
+    }, {
+        headers: {
+            'Accept': 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28',
+            // @ts-ignore
+            'Authorization': `Bearer ${session.user.accessToken}`
+        }
+    })
 
-    // console.log(fileData)
+    console.log(fileData)
 
     res.status(200).json({
         message: "hi function"
