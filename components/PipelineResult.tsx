@@ -17,9 +17,10 @@ function PipelineResult() {
     const { data: session } = useSession()
     const { yamlPipeline, setYamlPipeline } = usePipeline()
     const [copied, setCopied] = useState(false)
+    const [gistLink, setGistLink] = useState("https://youtube.com.br")
 
     async function saveAsGist() {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/gists`, { 
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/gists`, {
             content: `${yamlPipeline}`,
         }, {
             headers: {
@@ -29,7 +30,14 @@ function PipelineResult() {
         })
 
         console.log(response.data)
+        setGistLink(response.data.url)
     }
+
+    useEffect(() => {
+        if (gistLink) {
+            setTimeout(() => setGistLink(null), 15000)
+        }
+    }, [gistLink])
 
     useEffect(() => {
         if (copied) [
@@ -41,20 +49,28 @@ function PipelineResult() {
 
     return (
         <>
-            { session && 
-                <Button icon fluid style={{ marginBottom: "5px"}}
-                onClick={() => saveAsGist()}
+            {gistLink &&
+                <Button color="yellow" icon fluid style={{ marginBottom: "5px" }}>
+                    <a href={gistLink} target="_blank" style={{ color: "white" }}>
+                        Access Gist
+                    </a>
+                </Button>
+            }
+
+            {session &&
+                <Button icon fluid style={{ marginBottom: "5px" }}
+                    onClick={() => saveAsGist()}
                 >
                     <Icon name="github" /> &nbsp;
                     Save as Gist
                 </Button>
             }
-            
+
             <CopyToClipboard fluid text={yamlPipeline}
                 onCopy={() => setCopied(true)}>
                 <Button primary icon>
                     <Icon name="copy" /> &nbsp;
-                    { copied ? 'Copied' : 'Copy to pipeline' }
+                    {copied ? 'Copied' : 'Copy to pipeline'}
                 </Button>
             </CopyToClipboard>
             <Editor

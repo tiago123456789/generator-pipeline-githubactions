@@ -35,6 +35,8 @@ export default async (
   })
 
   // @ts-ignore
-  console.log(response.data)
-  res.end()
+  const { url } = response.data;
+  res.json({
+    link: url
+  })
 }
