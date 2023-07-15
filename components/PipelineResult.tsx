@@ -19,7 +19,7 @@ function PipelineResult() {
     const [copied, setCopied] = useState(false)
 
     async function saveAsGist() {
-        const response = await axios.post("http://localhost:3000/api/gists", { 
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/gists`, { 
             content: `${yamlPipeline}`,
         }, {
             headers: {
