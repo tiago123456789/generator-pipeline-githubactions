@@ -26,20 +26,15 @@
 // }
 
 // This is an example of how to read a JSON Web Token from an API route
-import { getToken } from "next-auth/jwt"
+import { getSession } from "next-auth/client"
+import { NextApiRequest, NextApiResponse } from "next";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
-
-export default async (req, res) => {
-  // If you don't have NEXTAUTH_SECRET set, you will have to pass your secret as `secret` to `getToken`
-  const token = await getToken({ req })
-  if (token) {
-    // Signed in
-    console.log("JSON Web Token", JSON.stringify(token, null, 2))
-  } else {
-    // Not Signed in
-    res.status(401)
-  }
+export default async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const session = await getSession({req})
+  console.log(session)
   res.end()
 }
