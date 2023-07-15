@@ -23,7 +23,7 @@ export const authOptions = {
       clientSecret: process.env.GITHUB_SECRET,
       authorization: {
         params: {
-          scope: "gist "
+          scope: "gist repo"
         }
       },
     }),
