@@ -17,7 +17,22 @@ function PipelineResult() {
     const { data: session } = useSession()
     const { yamlPipeline, setYamlPipeline } = usePipeline()
     const [copied, setCopied] = useState(false)
-    const [gistLink, setGistLink] = useState(null)
+    const [gistLink, setGistLink] = useState(null);
+
+    async function runPipeline() {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/execute-pipelines`, {
+            content: `${yamlPipeline}`,
+        }, {
+            headers: {
+                // @ts-ignore
+                Authorization: `Bearer ${session?.user?.accessToken}`
+            }
+        })
+
+        const aElement = document.createElement('a');
+        aElement.href = response.data.linkToAccessGithubAction;
+        aElement.click();
+    }
 
     async function saveAsGist() {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/gists`, {
@@ -62,6 +77,15 @@ function PipelineResult() {
                 >
                     <Icon name="github" /> &nbsp;
                     Save as Gist
+                </Button>
+            }
+
+            {session &&
+                <Button icon fluid style={{ marginBottom: "5px" }}
+                    onClick={() => runPipeline()}
+                >
+                    <Icon name="github" /> &nbsp;
+                    Run pipeline
                 </Button>
             }
 
