@@ -31,6 +31,7 @@ function PipelineResult() {
 
         const aElement = document.createElement('a');
         aElement.href = response.data.linkToAccessGithubAction;
+        aElement.target = '_blank';
         aElement.click();
     }
 
