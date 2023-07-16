@@ -121,21 +121,6 @@ const PipelineForm = () => {
       jobs: {
         [pipeline.jobName]: {
           "runs-on": pipeline.os,
-          // steps: pipeline.steps.map(step => {
-          //   return {
-          //     uses: step.action,
-          //     with: step.params.map(param => {
-          //       return {
-          //         [param.key]: param.value
-          //       }
-          //     }),
-          //     env: step.envs.map(env => {
-          //       return {
-          //         [env.key]: env.value
-          //       }
-          //     })
-          //   }
-          // })
         }
       }
     }
@@ -148,27 +133,25 @@ const PipelineForm = () => {
       }
 
       if (step.params[0] && step.params[0].key.length > 0) {
-        newStep["with"] = step.params.map(param => {
-          return {
-            [param.key]: param.value
-          }
+        const params = {}
+        step.params.forEach(param => {
+          params[param.key] = param.value
         })
+        newStep["with"] = params;
       }
 
       if (step.envs[0] && step.envs[0].key.length > 0) {
-        newStep["env"] = step.envs.map(env => {
-          return {
-            [env.key]: env.value
-          }
+        const envs = {}
+        step.envs.forEach(env => {
+          envs[env.key] = env.value
         })
+        newStep["env"] = envs
       }
 
       steps.push(newStep)
     }
 
     dataToGenereatePipeline.jobs[pipeline.jobName]["steps"] = steps;
-    console.log(dataToGenereatePipeline)
-    console.log(YAML.stringify(dataToGenereatePipeline))
     setYamlPipeline(YAML.stringify(dataToGenereatePipeline))
   }
 
