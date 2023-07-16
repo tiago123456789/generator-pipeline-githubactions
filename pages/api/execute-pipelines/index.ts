@@ -28,7 +28,7 @@ const hasRepository = async (owner, repository, accessToken) => {
     }
 }
 
-const createRepository = async (repository, description) => {
+const createRepository = async (repository, description, accessToken) => {
     const { data: repositoryData } = await axios.post("https://api.github.com/user/repos", {
         "name": repository,
         "description": description,
@@ -39,7 +39,7 @@ const createRepository = async (repository, description) => {
             'Accept': 'application/vnd.github+json',
             'X-GitHub-Api-Version': '2022-11-28',
             // @ts-ignore
-            'Authorization': `Bearer ${session.user.accessToken}`
+            'Authorization': `Bearer ${accessToken}`
         }
     })
 
@@ -127,7 +127,10 @@ export default async (
     );
 
     if (!hasCreatedRepository) {
-        await createRepository(REPOSITORY_NAME,REPOSITORY_DESCRIPTION )
+        await createRepository(
+            // @ts-ignore
+            REPOSITORY_NAME, REPOSITORY_DESCRIPTION, session.user.accessToken
+        )
     }
 
     const pipelineContent = req.body.content;
