@@ -28,7 +28,9 @@ const PipelineForm = () => {
     jobName: "",
     steps: [
       {
+        name: "",
         action: "",
+        shell: "",
         params: [
           { key: "host", value: "localhost" },
           { key: "port", value: "22" }
@@ -81,7 +83,9 @@ const PipelineForm = () => {
     console.log("PASSED ON HERE")
     const data = pipeline
     data.steps.push({
+      name: "",
       action: "",
+      shell: "",
       params: [],
       envs: [],
     })
@@ -90,6 +94,18 @@ const PipelineForm = () => {
 
   function onChangeInputValue(key, event) {
     setPipeline({ ...pipeline, [key]: event.target.value })
+  }
+
+  function onChangeInputValueName(stepPosition, event) {
+    const data = pipeline;
+    data.steps[stepPosition]['name'] = event.target.value;
+    setPipeline({ ...pipeline })
+  }
+
+  function onChangeInputValueShell(stepPosition, event) {
+    const data = pipeline;
+    data.steps[stepPosition]['shell'] = event.target.value;
+    setPipeline({ ...pipeline })
   }
 
   function onChangeInputValueAction(stepPosition, event) {
@@ -128,8 +144,18 @@ const PipelineForm = () => {
     const steps = []
     for (let index = 0; index < pipeline.steps.length; index += 1) {
       const step = pipeline.steps[index];
-      const newStep = {
-        uses: step.action,
+      const newStep = {}
+
+      if (step.shell.length > 0) {
+        newStep["run"] = step.shell
+      }
+
+      if (step.name.length > 0) {
+        newStep["name"] = step.name
+      }
+
+      if (step.action.length > 0) {
+        newStep["users"] = step.action
       }
 
       if (step.params[0] && step.params[0].key.length > 0) {
@@ -243,11 +269,26 @@ const PipelineForm = () => {
 
             <Card.Content>
               <Form.Field style={{ marginLeft: "10px" }}>
+              <label>Name:</label>
+                <input
+                  value={pipeline.steps[index].name}
+                  onChange={(event) => onChangeInputValueName(index, event)}
+                  placeholder='Run tests' />
+                <br />
+                <br />
                 <label>Action:</label>
                 <input
                   value={pipeline.steps[index].action}
                   onChange={(event) => onChangeInputValueAction(index, event)}
                   placeholder='pipeline to run the application tests' />
+                <br />
+                <br />
+                <label>Shell command:</label>
+                <input
+                  value={pipeline.steps[index].shell}
+                  onChange={(event) => onChangeInputValueShell(index, event)}
+                  placeholder='npm run build && npm run test' />
+                <br />
                 <br />
                 <label>Parameters:</label>
                 {renderParameters(index)}
@@ -328,7 +369,7 @@ const PipelineForm = () => {
       <Card fluid>
         <Card.Content>
           <Form.Field>
-            <label>Pipeline job</label>
+            <label>Job name:</label>
             <input
               value={pipeline.jobName}
               onChange={(event) => onChangeInputValue("jobName", event)}
