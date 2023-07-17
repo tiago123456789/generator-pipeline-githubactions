@@ -1,0 +1,72 @@
+[
+    {
+        "name": "Pipeline",
+        "event": "push",
+        "branch": "main",
+        "os": "ubuntu-latest",
+        "jobName": "Pipeline ci",
+        "steps": [
+            {
+                "name": "Clone repository",
+                "action": "actions/setup-node@v2",
+                "shell": "",
+                "params": [],
+                "envs": []
+            },
+            {
+                "name": "Setup node.js",
+                "action": "actions/setup-node@v2",
+                "shell": "",
+                "params": [],
+                "envs": []
+            },
+            {
+                "name": "Execute some shell command",
+                "action": "",
+                "shell": "node --version && npm --version",
+                "params": [],
+                "envs": []
+            }
+        ]
+    },
+    {
+        "name": "Pipeline",
+        "event": "push",
+        "branch": "main",
+        "os": "ubuntu-latest",
+        "jobName": "Pipeline ci",
+        "steps": [
+            {
+                "name": "Clone repository",
+                "action": "actions/setup-node@v2",
+                "shell": "",
+                "params": [],
+                "envs": []
+            },
+            {
+                "name": "Setup node.js",
+                "action": "actions/setup-node@v2",
+                "shell": "",
+                "params": [],
+                "envs": []
+            },
+            {
+                "name": "Run tests",
+                "action": "",
+                "shell": "npm install && npm run test",
+                "params": [],
+                "envs": []
+            },
+            {
+                "name": "Discord Webhook Action",
+                "action": "tsickert/discord-webhook@v5.3.0",
+                "shell": "npm install && npm run test",
+                "params": [
+                    { "key": "webhook-url", "value": "${{ secrets.WEBHOOK_URL }}" },
+                    { "key": "content", "value": "Pipeline executed success" }
+                ],
+                "envs": []
+            }
+        ]
+    }
+]

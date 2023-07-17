@@ -1,47 +1,17 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
-  Container,
-  Divider,
   Grid,
-  Header,
-  Icon,
-  Image,
-  List,
-  Menu,
-  Segment,
-  Sidebar,
-  Checkbox,
   Form,
   Card
 } from 'semantic-ui-react'
 import * as YAML from 'json-to-pretty-yaml';
 import { usePipeline } from '../contexts/PipelineContext';
+import pipelineExamples from "../data/pipelines.json"
 
 const PipelineForm = () => {
   const { setYamlPipeline } = usePipeline()
-  const [pipeline, setPipeline] = useState({
-    name: "",
-    event: "",
-    branch: "",
-    os: "",
-    jobName: "",
-    steps: [
-      {
-        name: "",
-        action: "",
-        shell: "",
-        params: [
-          { key: "host", value: "localhost" },
-          { key: "port", value: "22" }
-        ],
-        envs: [
-          { key: "USERNAME", value: "${ secrets.USERNAME }" },
-          { key: "PASSWORD", value: "${ secrets.PASSWORD }" }
-        ],
-      }
-    ]
-  })
+  const [pipeline, setPipeline] = useState(pipelineExamples[0])
 
 
 
@@ -80,7 +50,6 @@ const PipelineForm = () => {
   }
 
   function addNewStep() {
-    console.log("PASSED ON HERE")
     const data = pipeline
     data.steps.push({
       name: "",
@@ -146,16 +115,16 @@ const PipelineForm = () => {
       const step = pipeline.steps[index];
       const newStep = {}
 
-      if (step.shell.length > 0) {
-        newStep["run"] = step.shell
-      }
-
       if (step.name.length > 0) {
         newStep["name"] = step.name
       }
 
       if (step.action.length > 0) {
         newStep["users"] = step.action
+      }
+
+      if (step.shell.length > 0) {
+        newStep["run"] = step.shell
       }
 
       if (step.params[0] && step.params[0].key.length > 0) {
