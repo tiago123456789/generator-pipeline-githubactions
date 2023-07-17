@@ -62,6 +62,9 @@ const PipelineForm = () => {
   }
 
   function onChangeInputValue(key, event) {
+    if (key == 'jobName') {
+      event.target.value = event.target.value.toLowerCase().replace(/\s/, "-")
+    }
     setPipeline({ ...pipeline, [key]: event.target.value })
   }
 

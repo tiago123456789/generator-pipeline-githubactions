@@ -4,7 +4,7 @@
         "event": "push",
         "branch": "main",
         "os": "ubuntu-latest",
-        "jobName": "Pipeline ci",
+        "jobName": "pipeline-ci",
         "steps": [
             {
                 "name": "Clone repository",
