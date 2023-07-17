@@ -120,7 +120,7 @@ const PipelineForm = () => {
       }
 
       if (step.action.length > 0) {
-        newStep["users"] = step.action
+        newStep["uses"] = step.action
       }
 
       if (step.shell.length > 0) {
