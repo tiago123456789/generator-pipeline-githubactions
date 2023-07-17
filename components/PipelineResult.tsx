@@ -81,7 +81,7 @@ function PipelineResult() {
                     onClick={() => saveAsGist()}
                 >
                     <Icon name="github" /> &nbsp;
-                    Save as Gist
+                    { !isSavingGist ? 'Save as Gist' : 'Saving pipeline in Github gist' }
                 </Button>
             }
 
