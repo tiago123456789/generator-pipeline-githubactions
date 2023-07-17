@@ -17,42 +17,54 @@ function PipelineResult() {
     const { data: session } = useSession()
     const { yamlPipeline, setYamlPipeline } = usePipeline()
     const [copied, setCopied] = useState(false)
-    const [gistLink, setGistLink] = useState(null);
+    const [isRunningPipeline, setIsRunningPipeline] = useState(false)
+    const [isSavingGist, setIsSavingGist] = useState(false)
 
     async function runPipeline() {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/execute-pipelines`, {
-            content: `${yamlPipeline}`,
-        }, {
-            headers: {
-                // @ts-ignore
-                Authorization: `Bearer ${session?.user?.accessToken}`
-            }
-        })
+        try {
+            setIsRunningPipeline(true)
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/execute-pipelines`, {
+                content: `${yamlPipeline}`,
+            }, {
+                headers: {
+                    // @ts-ignore
+                    Authorization: `Bearer ${session?.user?.accessToken}`
+                }
+            })
 
-        const aElement = document.createElement('a');
-        aElement.href = response.data.linkToAccessGithubAction;
-        aElement.target = '_blank';
-        aElement.click();
+            const aElement = document.createElement('a');
+            aElement.href = response.data.linkToAccessGithubAction;
+            aElement.target = '_blank';
+            aElement.click();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsRunningPipeline(false)
+        }
     }
 
     async function saveAsGist() {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/gists`, {
-            content: `${yamlPipeline}`,
-        }, {
-            headers: {
-                // @ts-ignore
-                Authorization: `Bearer ${session?.user?.accessToken}`
-            }
-        })
-
-        setGistLink(response.data.link)
-    }
-
-    useEffect(() => {
-        if (gistLink) {
-            setTimeout(() => setGistLink(null), 15000)
+        try {
+            setIsSavingGist(true)
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/api/gists`, {
+                content: `${yamlPipeline}`,
+            }, {
+                headers: {
+                    // @ts-ignore
+                    Authorization: `Bearer ${session?.user?.accessToken}`
+                }
+            })
+    
+            const aElement = document.createElement('a');
+            aElement.href = response.data.link;
+            aElement.target = '_blank';
+            aElement.click();
+        } catch(error) {
+            console.log(error);
+        } finally {
+            setIsSavingGist(false)
         }
-    }, [gistLink])
+    }
 
     useEffect(() => {
         if (copied) [
@@ -64,14 +76,6 @@ function PipelineResult() {
 
     return (
         <>
-            {gistLink &&
-                <Button color="yellow" icon fluid style={{ marginBottom: "5px" }}>
-                    <a href={gistLink} target="_blank" style={{ color: "white" }}>
-                        Access Gist
-                    </a>
-                </Button>
-            }
-
             {session &&
                 <Button icon fluid style={{ marginBottom: "5px" }}
                     onClick={() => saveAsGist()}
@@ -86,7 +90,7 @@ function PipelineResult() {
                     onClick={() => runPipeline()}
                 >
                     <Icon name="github" /> &nbsp;
-                    Run pipeline
+                    {!isRunningPipeline ? 'Run pipeline' : 'Preparing to run pipeline'}
                 </Button>
             }
 

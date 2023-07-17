@@ -13,8 +13,6 @@ const PipelineForm = () => {
   const { setYamlPipeline } = usePipeline()
   const [pipeline, setPipeline] = useState(pipelineExamples[0])
 
-
-
   function addNewParam(stepPostion) {
     const data = pipeline;
     data.steps[stepPostion].params.push({
